@@ -1,6 +1,6 @@
 {
   "name": "@forivall/dynamic-cdn-webpack-plugin",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "description": "Dynamically get your dependencies from a cdn rather than bundling them in your app",
   "license": "MIT",
   "repository": "forivall/dynamic-cdn-webpack-plugin",
