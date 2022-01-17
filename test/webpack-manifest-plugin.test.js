@@ -1,9 +1,9 @@
 const path = require('path');
-const {fs} = require('mz');
+const fs = require('fs-extra');
 const t = require('tap');
 
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin');
-const DynamicCdnWebpackPlugin = require('..');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const DynamicCdnWebpackPlugin = require('..').default;
 
 const runWebpack = require('./helpers/run-webpack.js');
 const cleanDir = require('./helpers/clean-dir.js');
@@ -24,7 +24,8 @@ t.test('webpack-manifest-plugin', async t => {
         },
 
         plugins: [
-            new WebpackManifestPlugin({fileName: 'manifest.json'}),
+            // prettier-align
+            new WebpackManifestPlugin({ fileName: 'manifest.json' }),
             new DynamicCdnWebpackPlugin(),
         ],
     });

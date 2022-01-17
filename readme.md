@@ -1,23 +1,21 @@
-# dynamic-cdn-webpack-plugin
+# @forivall/dynamic-cdn-webpack-plugin
 
-[![npm](https://img.shields.io/npm/v/dynamic-cdn-webpack-plugin.svg)](https://www.npmjs.com/package/dynamic-cdn-webpack-plugin) [![Build Status](https://travis-ci.org/mastilver/dynamic-cdn-webpack-plugin.svg?branch=master)](https://travis-ci.org/mastilver/dynamic-cdn-webpack-plugin) [![codecov](https://codecov.io/gh/mastilver/dynamic-cdn-webpack-plugin/badge.svg?branch=master)](https://codecov.io/gh/mastilver/dynamic-cdn-webpack-plugin?branch=master) [![David](https://img.shields.io/david/mastilver/dynamic-cdn-webpack-plugin.svg)](https://david-dm.org/mastilver/dynamic-cdn-webpack-plugin) [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
+[![build status](https://github.com/forivall/dynamic-cdn-webpack-plugin/actions/workflows/main.yml/badge.svg)](https://github.com/forivall/dynamic-cdn-webpack-plugin/actions/workflows/main.yml)
+[![dependency status](https://david-dm.org/forivall/dynamic-cdn-webpack-plugin.svg)](https://david-dm.org/forivall/dynamic-cdn-webpack-plugin)
+[![coverage status](https://coveralls.io/repos/github/forivall/dynamic-cdn-webpack-plugin/badge.svg)](https://coveralls.io/github/forivall/dynamic-cdn-webpack-plugin)
+[![npm version](https://img.shields.io/npm/v/@forivall/dynamic-cdn-webpack-plugin)](https://npm.im/@forivall/dynamic-cdn-webpack-plugin)
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
 > Dynamically get your dependencies from a cdn rather than bundling them in your app
 
-Warning: This module is a fork from [https://github.com/mastilver/dynamic-cdn-webpack-plugin](https://github.com/mastilver/dynamic-cdn-webpack-plugin) to support Webpack 5.
+NOTE: This module is a fork of
+[https://github.com/mastilver/dynamic-cdn-webpack-plugin](https://github.com/mastilver/dynamic-cdn-webpack-plugin)
+to support Webpack 5, and use Typescript.
 
 ## Install
 
 ```
 $ npm install --save-dev dynamic-cdn-webpack-plugin module-to-cdn
-```
-
-## Compatibility with webpack
-
-If you are using `webpack --version <= 3` then you should be installing with the following command.
-
-```
-$ npm install --save-dev dynamic-cdn-webpack-plugin@3.4.1 module-to-cdn
 ```
 
 ## Usage with HtmlWebpackPlugin
