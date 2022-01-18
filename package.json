@@ -50,7 +50,7 @@
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@tsconfig/node10": "^1.0.8",
-    "@types/node": "^10.17.60",
+    "@types/node": "^17.0.10",
     "@types/prettier": "^2.4.3",
     "@types/tap": "^15.0.5",
     "@types/xo": "^0.39.2",
