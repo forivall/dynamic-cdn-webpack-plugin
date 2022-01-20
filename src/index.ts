@@ -60,7 +60,7 @@ export default class DynamicCdnWebpackPlugin {
     this.htmlWebpackPlugin = (html && htmlWebpackPlugin) || undefined;
 
     // Support for old way without passing htmlWebpackPlugin as an argument
-    if (htmlWebpackPlugin === undefined) {
+    if (html && htmlWebpackPlugin === undefined) {
       try {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-require-imports
         this.htmlWebpackPlugin = require('html-webpack-plugin');
