@@ -76,7 +76,7 @@ t.test('loadScripts using production version', async t => {
     t.ok(files.includes('app.js'));
     t.ok(files.includes('https://unpkg.com/react@15.6.1/dist/react.min.js'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/loadScripts-node-env-prod/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/loadScripts-env-prod/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('THIS IS REACT!');
