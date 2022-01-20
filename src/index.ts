@@ -1,8 +1,8 @@
 import type HtmlWebpackPlugin from 'html-webpack-plugin';
 import readPkgUp from 'read-pkg-up';
 import resolvePkg from 'resolve-pkg';
+import { ExternalModule } from 'webpack';
 import type { Compiler } from 'webpack';
-import ExternalModule from 'webpack/lib/ExternalModule';
 
 import getResolver from './get-resolver';
 import { CdnModuleInfo, CdnModuleResolver, PluginOptions } from './types';
@@ -28,12 +28,23 @@ export default class DynamicCdnWebpackPlugin {
   verbose: boolean;
   resolver: CdnModuleResolver;
   modulesFromCdn: { [modulePath: string]: CdnModuleInfo };
+  loadScripts: boolean;
   htmlWebpackPlugin?: typeof HtmlWebpackPlugin;
+
   constructor(
     options: PluginOptions = {},
     htmlWebpackPlugin?: typeof HtmlWebpackPlugin | false
   ) {
-    const { disable = false, env, exclude, only, verbose, resolver } = options;
+    const {
+      disable = false,
+      env,
+      exclude,
+      only,
+      verbose,
+      resolver,
+      loadScripts = false,
+      html = !loadScripts,
+    } = options;
     if (exclude && only) {
       throw new Error("You can't use 'exclude' and 'only' at the same time");
     }
@@ -44,9 +55,9 @@ export default class DynamicCdnWebpackPlugin {
     this.only = only;
     this.verbose = verbose === true;
     this.resolver = getResolver(resolver);
+    this.loadScripts = loadScripts;
     this.modulesFromCdn = {};
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    this.htmlWebpackPlugin = htmlWebpackPlugin || undefined;
+    this.htmlWebpackPlugin = (html && htmlWebpackPlugin) || undefined;
 
     // Support for old way without passing htmlWebpackPlugin as an argument
     if (htmlWebpackPlugin === undefined) {
@@ -71,10 +82,14 @@ export default class DynamicCdnWebpackPlugin {
         if (!moduleRegex.test(modulePath)) return;
 
         // Use recognized CDN module if found
-        const varName = await this.addModule(contextPath, modulePath, { env });
-        return typeof varName === 'string'
-          ? new ExternalModule(varName, 'var', modulePath)
-          : undefined;
+        const info = await this.addModule(contextPath, modulePath, { env });
+        if (!info) return;
+
+        const varName = info.var;
+
+        return this.loadScripts
+          ? new ExternalModule([info.url, varName], 'script', modulePath)
+          : new ExternalModule(varName, 'var', modulePath);
       });
     });
 
@@ -116,7 +131,7 @@ export default class DynamicCdnWebpackPlugin {
     contextPath: string,
     modulePath: string,
     { env }: { env: string }
-  ) {
+  ): Promise<false | CdnModuleInfo> {
     const isModuleExcluded =
       this.exclude.includes(modulePath) ||
       (this.only && !this.only.includes(modulePath));
@@ -146,7 +161,7 @@ export default class DynamicCdnWebpackPlugin {
     const isModuleAlreadyLoaded = Boolean(this.modulesFromCdn[modulePath]);
     if (isModuleAlreadyLoaded) {
       const isSameVersion = this.modulesFromCdn[modulePath].version === version;
-      return isSameVersion ? this.modulesFromCdn[modulePath].var : false;
+      return isSameVersion ? this.modulesFromCdn[modulePath] : false;
     }
 
     const cdnConfig = await this.resolver(modulePath, version, { env });
@@ -180,6 +195,6 @@ export default class DynamicCdnWebpackPlugin {
     }
 
     this.modulesFromCdn[modulePath] = cdnConfig;
-    return cdnConfig.var;
+    return cdnConfig;
   }
 }

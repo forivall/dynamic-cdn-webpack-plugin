@@ -202,6 +202,19 @@ Default: `'module-to-cdn'`
 Allow you to define a custom module resolver, it can either be a `function` or an npm module.
 The resolver should return (or resolve as a Promise) either `null` or an `object` with the keys: `name`, `var`, `url`, `version`.
 
+#### options.html
+Type: `boolean`<br>
+Default: `!loadScripts` (`true`, unless `options.loadScripts` is true)
+
+Inject the CDN script tags into the `HtmlWebpackPlugin`, if available
+
+#### options.loadScripts
+Type: `boolean`<br>
+Default: `false`
+
+Instead of expecting the scripts to already be loaded via a `<script src="..."></script>` in the html, load them dynamically.
+Uses [webpack externalsType.script](https://webpack.js.org/configuration/externals/#externalstypescript)
+
 
 ## Related
 
