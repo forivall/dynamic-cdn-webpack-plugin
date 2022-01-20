@@ -8,15 +8,15 @@ const DynamicCdnWebpackPlugin = require('..').default;
 const runWebpack = require('./helpers/run-webpack.js');
 const cleanDir = require('./helpers/clean-dir.js');
 
-t.test('no-html-webpack-plugin', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin'));
+t.test('html-webpack-plugin-load-scripts', async t => {
+    await cleanDir(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-load-scripts'));
 
     await runWebpack({
         context: path.resolve(__dirname, './fixtures/app'),
 
         output: {
             publicPath: '/',
-            path: path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin'),
+            path: path.resolve(__dirname, './fixtures/output/html-webpack-plugin-load-scripts'),
         },
 
         entry: {
@@ -26,33 +26,33 @@ t.test('no-html-webpack-plugin', async t => {
         plugins: [
             // prettier-align
             new HtmlWebpackPlugin(),
-            new DynamicCdnWebpackPlugin({}, false),
+            new DynamicCdnWebpackPlugin({ loadScripts: true }),
         ],
     });
 
-    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin/index.html'), {
+    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-load-scripts/index.html'), {
         encoding: 'utf-8',
     });
 
     t.ok(indexFile.includes('src="/app.js"'));
     t.ok(!indexFile.includes('src="https://unpkg.com/react@15.6.1/dist/react.js"'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-load-scripts/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('PureComponent');
     t.notOk(doesIncludeReact);
 });
 
-t.test('no-html-webpack-plugin-options', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin-options'));
+t.test('html-webpack-plugin-and-load-scripts', async t => {
+    await cleanDir(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-and-load-scripts'));
 
     await runWebpack({
         context: path.resolve(__dirname, './fixtures/app'),
 
         output: {
             publicPath: '/',
-            path: path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin-options'),
+            path: path.resolve(__dirname, './fixtures/output/html-webpack-plugin-and-load-scripts'),
         },
 
         entry: {
@@ -62,18 +62,18 @@ t.test('no-html-webpack-plugin-options', async t => {
         plugins: [
             // prettier-align
             new HtmlWebpackPlugin(),
-            new DynamicCdnWebpackPlugin({ html: false }),
+            new DynamicCdnWebpackPlugin({ loadScripts: true, html: true }),
         ],
     });
 
-    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin-options/index.html'), {
+    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-and-load-scripts/index.html'), {
         encoding: 'utf-8',
     });
 
     t.ok(indexFile.includes('src="/app.js"'));
-    t.ok(!indexFile.includes('src="https://unpkg.com/react@15.6.1/dist/react.js"'));
+    t.ok(indexFile.includes('src="https://unpkg.com/react@15.6.1/dist/react.js"'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/no-html-webpack-plugin-options/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-and-load-scripts/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('PureComponent');
