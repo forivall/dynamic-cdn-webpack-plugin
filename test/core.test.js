@@ -135,9 +135,8 @@ t.test('disable with mode=production', async t => {
     });
 
     const files = getChunkFiles(stats);
-    t.equal(files.length, 2);
+    t.equal(files.length, 1);
     t.ok(files.includes('app.js'));
-    t.ok(files.includes('https://unpkg.com/react@15.6.1/dist/react.min.js'));
 
     const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/disable-node-env-prod/app.js'));
 
