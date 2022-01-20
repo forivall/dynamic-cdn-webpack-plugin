@@ -15,7 +15,7 @@ to support Webpack 5, and use Typescript.
 ## Install
 
 ```
-$ npm install --save-dev dynamic-cdn-webpack-plugin module-to-cdn
+$ npm install --save-dev @forivall/dynamic-cdn-webpack-plugin
 ```
 
 ## Usage with HtmlWebpackPlugin
@@ -25,7 +25,7 @@ $ npm install --save-dev dynamic-cdn-webpack-plugin module-to-cdn
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
+const DynamicCdnWebpackPlugin = require('@forivall/dynamic-cdn-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -88,7 +88,7 @@ import { BrowserRouter } from 'react-router-dom';
 const path = require('path');
 
 const ManifestPlugin = require('webpack-manifest-plugin');
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
+const DynamicCdnWebpackPlugin = require('@forivall/dynamic-cdn-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -149,7 +149,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 `webpack.config.js`<br>
 ```js
-const DynamicCdnWebpackPlugin = require('dynamic-cdn-webpack-plugin');
+const DynamicCdnWebpackPlugin = require('@forivall/dynamic-cdn-webpack-plugin');
 
 module.exports = {
     mode: 'production',
