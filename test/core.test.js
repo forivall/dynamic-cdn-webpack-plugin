@@ -45,14 +45,14 @@ t.test('basic', async t => {
 });
 
 t.test('disable', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/basic'));
+    await cleanDir(path.resolve(__dirname, './fixtures/output/disable'));
 
     const stats = await runWebpack({
         context: path.resolve(__dirname, './fixtures/app'),
 
         output: {
             publicPath: '',
-            path: path.resolve(__dirname, './fixtures/output/basic'),
+            path: path.resolve(__dirname, './fixtures/output/disable'),
         },
 
         entry: {
@@ -70,7 +70,7 @@ t.test('disable', async t => {
     t.equal(files.length, 1);
     t.ok(files.includes('app.js'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/basic/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/disable/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('THIS IS REACT!');
@@ -112,6 +112,41 @@ t.test('using production version', async t => {
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('THIS IS REACT!');
     t.notOk(doesIncludeReact);
+});
+
+t.test('disable with mode=production', async t => {
+    await cleanDir(path.resolve(__dirname, './fixtures/output/disable-node-env-prod'));
+
+    const stats = await runWebpack({
+        mode: 'production',
+
+        context: path.resolve(__dirname, './fixtures/app'),
+
+        output: {
+            publicPath: '',
+            path: path.resolve(__dirname, './fixtures/output/disable-node-env-prod'),
+        },
+
+        entry: {
+            app: './single.js',
+        },
+
+        plugins: [new DynamicCdnWebpackPlugin({ disable: true })],
+    });
+
+    const files = getChunkFiles(stats);
+    t.equal(files.length, 2);
+    t.ok(files.includes('app.js'));
+    t.ok(files.includes('https://unpkg.com/react@15.6.1/dist/react.min.js'));
+
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/disable-node-env-prod/app.js'));
+
+    // NOTE: not inside t.notOk to prevent ava to display whole file in console
+    const doesIncludeReact = output.includes('THIS IS REACT!');
+    t.ok(doesIncludeReact);
+
+    const doesRequireReact = output.includes('module.exports = React');
+    t.notOk(doesRequireReact);
 });
 
 t.test('with mode=production', async t => {
