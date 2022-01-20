@@ -26,7 +26,9 @@ t.test('html-webpack-plugin-as-argument', async t => {
         plugins: [new HtmlWebpackPlugin(), new DynamicCdnWebpackPlugin({}, HtmlWebpackPlugin)],
     });
 
-    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-as-argument/index.html'), { encoding: 'utf-8' });
+    const indexFile = await fs.readFile(path.resolve(__dirname, './fixtures/output/html-webpack-plugin-as-argument/index.html'), {
+        encoding: 'utf-8',
+    });
 
     t.ok(indexFile.includes('src="/app.js"'));
     t.ok(indexFile.includes('src="https://unpkg.com/react@15.6.1/dist/react.js"'));
