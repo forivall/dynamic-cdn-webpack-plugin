@@ -181,7 +181,7 @@ t.test('with mode=production', async t => {
 });
 
 t.test('with mode=none', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/node-env-prod'));
+    await cleanDir(path.resolve(__dirname, './fixtures/output/mode-none'));
 
     const stats = await runWebpack({
         mode: 'none',
@@ -190,7 +190,7 @@ t.test('with mode=none', async t => {
 
         output: {
             publicPath: '',
-            path: path.resolve(__dirname, './fixtures/output/node-env-prod'),
+            path: path.resolve(__dirname, './fixtures/output/mode-none'),
         },
 
         entry: {
@@ -205,7 +205,7 @@ t.test('with mode=none', async t => {
     t.ok(files.includes('app.js'));
     t.ok(files.includes('https://unpkg.com/react@15.6.1/dist/react.js'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/node-env-prod/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/mode-none/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('THIS IS REACT!');
@@ -516,14 +516,14 @@ t.test('when using multiple versions of a module, make sure the right version is
 });
 
 t.test('basic with customer resolver of "module-to-cdn"', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/basic'));
+    await cleanDir(path.resolve(__dirname, './fixtures/output/basic-explicit-resolver'));
 
     const stats = await runWebpack({
         context: path.resolve(__dirname, './fixtures/app'),
 
         output: {
             publicPath: '',
-            path: path.resolve(__dirname, './fixtures/output/basic'),
+            path: path.resolve(__dirname, './fixtures/output/basic-explicit-resolver'),
         },
 
         entry: {
@@ -542,7 +542,7 @@ t.test('basic with customer resolver of "module-to-cdn"', async t => {
     t.ok(files.includes('app.js'));
     t.ok(files.includes('https://unpkg.com/react@15.6.1/dist/react.js'));
 
-    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/basic/app.js'));
+    const output = await fs.readFile(path.resolve(__dirname, './fixtures/output/basic-explicit-resolver/app.js'));
 
     // NOTE: not inside t.notOk to prevent ava to display whole file in console
     const doesIncludeReact = output.includes('THIS IS REACT!');
@@ -647,14 +647,14 @@ t.test('when one peerDependency fails, do not load from cdn', async t => {
 });
 
 t.test('when resolver retuns a Promise', async t => {
-    await cleanDir(path.resolve(__dirname, './fixtures/output/custom-resolver'));
+    await cleanDir(path.resolve(__dirname, './fixtures/output/custom-resolver-promise'));
 
     const stats = await runWebpack({
         context: path.resolve(__dirname, './fixtures/app'),
 
         output: {
             publicPath: '',
-            path: path.resolve(__dirname, './fixtures/output/custom-resolver'),
+            path: path.resolve(__dirname, './fixtures/output/custom-resolver-promise'),
         },
 
         entry: {
@@ -682,7 +682,7 @@ t.test('when resolver retuns a Promise', async t => {
     t.ok(files.includes('app.js'));
     t.ok(files.includes('https://my-cdn.com/react.js'));
 
-    let output = await fs.readFile(path.resolve(__dirname, './fixtures/output/custom-resolver/app.js'));
+    let output = await fs.readFile(path.resolve(__dirname, './fixtures/output/custom-resolver-promise/app.js'));
     output = output.toString();
 
     const doesExportCustomReact = output.includes('module.exports = CustomReact');
